@@ -8,8 +8,9 @@
     <link rel="stylesheet" th:href="@{/css/styles.css}">
     <style>
       :root{
-        --bg-base: #EAF4EC; /* Soft Sage Green */
-        --primary: #2E7D32;
+        --bg-base: #F7E9C8; /* Warm Butter */
+        --sage: #EAF4EC;    /* Soft Sage (secondary) */
+        --primary: #2E7D32; /* keep green as primary */
         --text-color: #2C3E50;
       }
 
@@ -18,6 +19,13 @@
         background-color: var(--bg-base);
         transition: background-color 220ms ease;
       }
+
+      /* Override sections that used bg-white to a warm butter tone for cohesive look */
+      .section.bg-white { background-color: var(--bg-base) !important; }
+
+      /* Optional: subtle borders using sage to keep the safety theme */
+      .feature-card, .stat-card { background: rgba(255,255,255,0.85); border:1px solid rgba(46,125,50,0.06); }
+
     </style>
 </head>
 <body>
@@ -56,7 +64,7 @@
 
 <header class="hero">
     <div class="container pt-5">
-        <p class="text-uppercase fw-bold mb-3" style="color: rgba(255,255,255,.72)">Java Full Stack Major Project</p>
+        <p class="text-uppercase fw-bold mb-3" style="color: rgba(44,62,80,.72)">Java Full Stack Major Project</p>
         <h1>Smart Tourist Safety Monitoring System</h1>
         <p class="mt-4 mb-4">
             A full-stack safety platform for tourists with live location tracking, SOS alerts,
