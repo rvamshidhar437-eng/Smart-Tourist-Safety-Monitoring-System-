@@ -1,0 +1,326 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Live Location | Smart Tourist Safety Monitoring System</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/css/styles.css}">
+</head>
+<body>
+<!-- Navbar -->
+<nav class="navbar navbar-expand-lg fixed-top app-navbar">
+    <div class="container-fluid">
+        <button class="btn btn-link sidebar-toggle me-3" id="sidebarToggle">
+            <i data-lucide="menu"></i>
+        </button>
+        <a class="navbar-brand d-flex align-items-center gap-2 fw-bold" th:href="@{/}">
+            <span class="brand-mark"><i data-lucide="shield-check"></i></span>
+            <span>Live Location</span>
+        </a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#topNav">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="topNav">
+            <div class="navbar-nav ms-auto align-items-lg-center gap-lg-2">
+                <button class="btn btn-outline-secondary icon-btn" type="button" data-theme-toggle aria-label="Toggle dark mode">
+                    <i data-lucide="moon"></i>
+                </button>
+                <a class="btn btn-outline-primary" th:href="@{/login}">Login</a>
+            </div>
+        </div>
+    </div>
+</nav>
+
+<!-- Sidebar -->
+<aside class="sidebar" id="sidebar">
+    <div class="sidebar-header">
+        <h5>Menu</h5>
+        <button class="btn-close" id="closeSidebar"></button>
+    </div>
+    <nav class="sidebar-nav">
+        <a href="#" class="nav-item" data-page="home">
+            <i data-lucide="home"></i>
+            <span>Home</span>
+        </a>
+        <a href="#" class="nav-item" data-page="safety-features">
+            <i data-lucide="shield"></i>
+            <span>Safety Features</span>
+        </a>
+        <a href="#" class="nav-item" data-page="care-module">
+            <i data-lucide="heart"></i>
+            <span>Care Module</span>
+        </a>
+        <a href="#" class="nav-item" data-page="build-safety">
+            <i data-lucide="wrench"></i>
+            <span>Build Safety</span>
+        </a>
+        <a href="#" class="nav-item active" data-page="live-location">
+            <i data-lucide="map-pin"></i>
+            <span>Live Location</span>
+        </a>
+        <a href="#" class="nav-item" data-page="emergency-services">
+            <i data-lucide="siren"></i>
+            <span>Emergency Services</span>
+        </a>
+    </nav>
+</aside>
+
+<!-- Main Content -->
+<main class="main-content">
+    <section class="hero" style="background: linear-gradient(135deg, #1976D2 0%, #0D47A1 100%);">
+        <div class="container pt-5">
+            <h1 style="color: white;">Live Location Dashboard</h1>
+            <p style="color: rgba(255,255,255,0.9); font-size: 1.1rem;">
+                Real-time location tracking and route management
+            </p>
+        </div>
+    </section>
+
+    <!-- Map Section -->
+    <section class="section">
+        <div class="container">
+            <h2 class="fw-bold mb-4">📍 Real-Time Location Map</h2>
+            <div class="row g-4 mb-5">
+                <div class="col-lg-8">
+                    <div class="feature-card" style="height: 500px; display: flex; align-items: center; justify-content: center; background: #f0f0f0;">
+                        <div class="text-center">
+                            <i data-lucide="map" style="width: 64px; height: 64px; color: #999; opacity: 0.5;"></i>
+                            <p class="text-muted mt-3">Login to view your live location on the map</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <div class="feature-card">
+                        <h5 class="mb-3">Location Controls</h5>
+                        <div class="d-grid gap-2">
+                            <button class="btn btn-primary" disabled>
+                                <i data-lucide="play" class="me-2" style="width: 16px; height: 16px;"></i>Start Tracking
+                            </button>
+                            <button class="btn btn-danger" disabled>
+                                <i data-lucide="pause" class="me-2" style="width: 16px; height: 16px;"></i>Stop Tracking
+                            </button>
+                            <button class="btn btn-secondary" disabled>
+                                <i data-lucide="redo" class="me-2" style="width: 16px; height: 16px;"></i>Refresh Location
+                            </button>
+                            <button class="btn btn-secondary" disabled>
+                                <i data-lucide="share-2" class="me-2" style="width: 16px; height: 16px;"></i>Share Location
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <hr class="my-5">
+
+            <!-- Current Location Info -->
+            <div class="row g-4 mb-5">
+                <div class="col-md-6">
+                    <div class="feature-card">
+                        <h5 class="mb-3"><i data-lucide="map-pin" class="me-2" style="width: 20px; height: 20px;"></i>Current Location</h5>
+                        <div class="location-info">
+                            <p class="text-muted-strong mb-2"><strong>Latitude:</strong> -- --</p>
+                            <p class="text-muted-strong mb-2"><strong>Longitude:</strong> -- --</p>
+                            <p class="text-muted-strong mb-2"><strong>Accuracy:</strong> -- meters</p>
+                            <p class="text-muted-strong mb-0"><strong>Last Update:</strong> --</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="feature-card">
+                        <h5 class="mb-3"><i data-lucide="trending-up" class="me-2" style="width: 20px; height: 20px;"></i>Trip Statistics</h5>
+                        <div class="stats-info">
+                            <p class="text-muted-strong mb-2"><strong>Distance Traveled:</strong> -- km</p>
+                            <p class="text-muted-strong mb-2"><strong>Duration:</strong> -- minutes</p>
+                            <p class="text-muted-strong mb-2"><strong>Average Speed:</strong> -- km/h</p>
+                            <p class="text-muted-strong mb-0"><strong>Waypoints:</strong> -- points</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <hr class="my-5">
+
+            <!-- Route History -->
+            <h2 class="fw-bold mb-4">📊 Route History</h2>
+            <div class="table-responsive">
+                <table class="table table-hover feature-card" style="margin: 0;">
+                    <thead class="table-light">
+                        <tr>
+                            <th>Time</th>
+                            <th>Location</th>
+                            <th>Latitude</th>
+                            <th>Longitude</th>
+                            <th>Speed</th>
+                            <th>Accuracy</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td colspan="6" class="text-center text-muted py-4">
+                                <i data-lucide="inbox" class="me-2" style="width: 20px; height: 20px;"></i>
+                                No location history. Login to start tracking.
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features -->
+    <section class="section bg-light">
+        <div class="container">
+            <h2 class="fw-bold text-center mb-5">Live Location Features</h2>
+            <div class="row g-4">
+                <div class="col-md-6 col-lg-4">
+                    <div class="feature-card">
+                        <div class="feature-icon mb-3"><i data-lucide="activity"></i></div>
+                        <h5>Real-time Tracking</h5>
+                        <p class="text-muted-strong">Continuous GPS tracking with updates every 30 seconds</p>
+                    </div>
+                </div>
+                <div class="col-md-6 col-lg-4">
+                    <div class="feature-card">
+                        <div class="feature-icon mb-3"><i data-lucide="route"></i></div>
+                        <h5>Route History</h5>
+                        <p class="text-muted-strong">Complete record of your travel paths and waypoints</p>
+                    </div>
+                </div>
+                <div class="col-md-6 col-lg-4">
+                    <div class="feature-card">
+                        <div class="feature-icon mb-3"><i data-lucide="share-2"></i></div>
+                        <h5>Location Sharing</h5>
+                        <p class="text-muted-strong">Share live location with trusted contacts</p>
+                    </div>
+                </div>
+                <div class="col-md-6 col-lg-4">
+                    <div class="feature-card">
+                        <div class="feature-icon mb-3"><i data-lucide="bell"></i></div>
+                        <h5>Geofencing</h5>
+                        <p class="text-muted-strong">Get alerts when entering or leaving designated areas</p>
+                    </div>
+                </div>
+                <div class="col-md-6 col-lg-4">
+                    <div class="feature-card">
+                        <div class="feature-icon mb-3"><i data-lucide="download"></i></div>
+                        <h5>Export Data</h5>
+                        <p class="text-muted-strong">Download your location history in multiple formats</p>
+                    </div>
+                </div>
+                <div class="col-md-6 col-lg-4">
+                    <div class="feature-card">
+                        <div class="feature-icon mb-3"><i data-lucide="bar-chart-2"></i></div>
+                        <h5>Analytics</h5>
+                        <p class="text-muted-strong">Analyze your travel patterns and statistics</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Location Sharing & Privacy -->
+    <section class="section">
+        <div class="container">
+            <div class="row g-4 align-items-center mb-5">
+                <div class="col-lg-6">
+                    <h2 class="fw-bold">🔒 Privacy & Location Sharing</h2>
+                    <p class="text-muted-strong mt-3">Control who can see your location and manage your privacy settings.</p>
+                    <ul class="list-unstyled mt-4">
+                        <li class="mb-2"><i data-lucide="check" class="text-success me-2" style="width: 20px; height: 20px;"></i>Full control over location sharing</li>
+                        <li class="mb-2"><i data-lucide="check" class="text-success me-2" style="width: 20px; height: 20px;"></i>Share with specific contacts only</li>
+                        <li class="mb-2"><i data-lucide="check" class="text-success me-2" style="width: 20px; height: 20px;"></i>Time-based sharing permissions</li>
+                        <li class="mb-2"><i data-lucide="check" class="text-success me-2" style="width: 20px; height: 20px;"></i>Revoke access anytime</li>
+                    </ul>
+                </div>
+                <div class="col-lg-6">
+                    <div class="feature-card">
+                        <h5 class="mb-3">Share With</h5>
+                        <div class="contact-list">
+                            <p class="text-muted text-center py-4">No contacts added yet. Login to manage sharing.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <hr class="my-5">
+
+            <!-- Safety Features -->
+            <div class="row g-4 align-items-center">
+                <div class="col-lg-6 order-lg-2">
+                    <h2 class="fw-bold">⚡ Safety Features</h2>
+                    <p class="text-muted-strong mt-3">Additional safety features integrated with live location.</p>
+                    <ul class="list-unstyled mt-4">
+                        <li class="mb-2"><i data-lucide="check" class="text-danger me-2" style="width: 20px; height: 20px;"></i>SOS with automatic location transmission</li>
+                        <li class="mb-2"><i data-lucide="check" class="text-danger me-2" style="width: 20px; height: 20px;"></i>Unsafe area notifications</li>
+                        <li class="mb-2"><i data-lucide="check" class="text-danger me-2" style="width: 20px; height: 20px;"></i>Route safety analysis</li>
+                        <li class="mb-2"><i data-lucide="check" class="text-danger me-2" style="width: 20px; height: 20px;"></i>Emergency contact quick access</li>
+                    </ul>
+                </div>
+                <div class="col-lg-6 order-lg-1">
+                    <div class="feature-card">
+                        <div class="feature-icon mb-3"><i data-lucide="shield-alert"></i></div>
+                        <h4>Emergency Integration</h4>
+                        <p class="text-muted-strong">Location automatically shared during SOS activation</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- How It Works -->
+    <section class="section bg-light">
+        <div class="container">
+            <h2 class="fw-bold text-center mb-5">How Live Location Works</h2>
+            <div class="row g-4">
+                <div class="col-md-6 col-lg-4 text-center">
+                    <div class="feature-card">
+                        <div class="feature-icon mb-3" style="font-size: 2rem;"><i data-lucide="smartphone"></i></div>
+                        <h5>1. Enable GPS</h5>
+                        <p class="text-muted-strong">Allow location access on your device</p>
+                    </div>
+                </div>
+                <div class="col-md-6 col-lg-4 text-center">
+                    <div class="feature-card">
+                        <div class="feature-icon mb-3" style="font-size: 2rem;"><i data-lucide="wifi"></i></div>
+                        <h5>2. Connect</h5>
+                        <p class="text-muted-strong">System syncs location every 30 seconds</p>
+                    </div>
+                </div>
+                <div class="col-md-6 col-lg-4 text-center">
+                    <div class="feature-card">
+                        <div class="feature-icon mb-3" style="font-size: 2rem;"><i data-lucide="map"></i></div>
+                        <h5>3. Track</h5>
+                        <p class="text-muted-strong">View real-time position on the map</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Call to Action -->
+    <section class="section" style="background: linear-gradient(135deg, #1976D2 0%, #0D47A1 100%);">
+        <div class="container text-center" style="color: white;">
+            <h2 class="fw-bold mb-4">Start Tracking Your Location</h2>
+            <p class="mb-4" style="font-size: 1.1rem;">Keep yourself safe with real-time location monitoring</p>
+            <a th:href="@{/login}" class="btn btn-light btn-lg">
+                <i data-lucide="log-in" class="me-2"></i>Login to Dashboard
+            </a>
+        </div>
+    </section>
+</main>
+
+<!-- Footer -->
+<footer class="py-4 border-top mt-5">
+    <div class="container d-flex flex-wrap justify-content-between gap-2 text-muted-strong">
+        <span>&copy; <span data-current-year></span> Smart Tourist Safety Monitoring System</span>
+        <span>Spring Boot + Thymeleaf + MySQL</span>
+    </div>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://unpkg.com/lucide@latest"></script>
+<script th:src="@{/js/app.js}"></script>
+<script th:src="@{/js/navigation.js}"></script>
+</body>
+</html>
