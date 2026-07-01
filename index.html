@@ -6,8 +6,54 @@
     <title th:text="#{app.title}">Smart Tourist Safety Monitoring System</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" th:href="@{/css/styles.css}">
+    <style>
+      :root{
+        --bg-base: #EAF4EC; /* Soft Sage Green */
+        --bg-current: var(--bg-base);
+        --primary: #2E7D32;
+        --text-color: #2C3E50;
+      }
+
+      html,body{ height:100%; margin:0; }
+      body{
+        background-color: var(--bg-current);
+        transition: background-color 220ms ease;
+      }
+
+      /* Slider UI */
+      .bg-slider{
+        position:fixed;
+        right:18px;
+        bottom:18px;
+        z-index:1100;
+        width:270px;
+        display:flex;
+        gap:8px;
+        align-items:center;
+        padding:10px;
+        border-radius:10px;
+        background: rgba(255,255,255,0.94);
+        box-shadow: 0 6px 18px rgba(12,20,30,0.12);
+        border:1px solid rgba(44,62,80,0.06);
+        font-family: system-ui, -apple-system, "Segoe UI", Roboto, Arial;
+        font-size:13px;
+        color:var(--text-color);
+      }
+      .bg-slider input[type="range"]{ flex:1; -webkit-appearance:none; height:6px; background: linear-gradient(90deg,#fff 0%,var(--bg-base) 100%); border-radius:999px; outline:none; }
+      .bg-slider input[type="range"]::-webkit-slider-thumb{ -webkit-appearance:none; width:18px; height:18px; border-radius:50%; background:var(--primary); border:3px solid #fff; box-shadow:0 2px 6px rgba(0,0,0,0.15); cursor:pointer; }
+      .bg-preview{ width:44px; height:28px; border-radius:6px; border:1px solid rgba(44,62,80,0.06); box-shadow: inset 0 -1px 0 rgba(0,0,0,0.03); }
+      @media (prefers-color-scheme:dark){
+        .bg-slider{ background: rgba(8,12,16,0.7); color:#ddd; border:1px solid rgba(255,255,255,0.04); }
+      }
+    </style>
 </head>
 <body>
+<!-- Background shade slider: 0 = white, 100 = full Soft Sage Green (#EAF4EC) -->
+<div id="bgSliderPanel" class="bg-slider" role="region" aria-label="Background shade">
+  <label for="bgRange" style="margin-right:6px; min-width:42px;">Shade</label>
+  <input id="bgRange" type="range" min="0" max="100" value="100" aria-valuemin="0" aria-valuemax="100" aria-valuenow="100" />
+  <div id="bgPreview" class="bg-preview" title="#EAF4EC"></div>
+</div>
 <nav class="navbar navbar-expand-lg fixed-top app-navbar">
     <div class="container">
         <a class="navbar-brand d-flex align-items-center gap-2 fw-bold" th:href="@{/}">
@@ -180,5 +226,41 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 <script src="https://unpkg.com/lucide@latest"></script>
 <script th:src="@{/js/app.js}"></script>
+<script>
+(function(){
+  const baseHex = '#EAF4EC';
+  const slider = document.getElementById('bgRange');
+  const preview = document.getElementById('bgPreview');
+
+  function hexToRgb(hex){
+    hex = hex.replace('#','');
+    if(hex.length === 3) hex = hex.split('').map(c=>c+c).join('');
+    const int = parseInt(hex,16);
+    return { r: (int >> 16) & 255, g: (int >> 8) & 255, b: int & 255 };
+  }
+  function rgbToHex(r,g,b){ const toHex = v => v.toString(16).padStart(2,'0'); return '#' + toHex(r) + toHex(g) + toHex(b); }
+  function lerp(a,b,t){ return Math.round(a + (b - a) * t); }
+
+  function updateBackground(value){
+    const t = value / 100;
+    const base = hexToRgb(baseHex);
+    const r = lerp(255, base.r, t);
+    const g = lerp(255, base.g, t);
+    const b = lerp(255, base.b, t);
+    const hex = rgbToHex(r,g,b);
+    document.documentElement.style.setProperty('--bg-current', hex);
+    document.body.style.backgroundColor = hex;
+    preview.style.backgroundColor = hex;
+    preview.title = hex.toUpperCase();
+    slider.setAttribute('aria-valuenow', String(value));
+  }
+
+  // initialize
+  if (slider && preview) {
+    updateBackground(Number(slider.value));
+    slider.addEventListener('input', (e) => updateBackground(Number(e.target.value)));
+  }
+})();
+</script>
 </body>
 </html>
